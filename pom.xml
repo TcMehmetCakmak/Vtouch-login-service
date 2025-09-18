@@ -100,7 +100,7 @@
         </dependency>-->
 
         <!-- Swagger Annotations for OpenAPI 3 --><!-- Veya en son kararlı sürüm -->
-        <!--<dependency>
+        <dependency>
             <groupId>io.swagger.core.v3</groupId>
             <artifactId>swagger-annotations</artifactId>
             <version>2.2.20</version>
@@ -125,12 +125,12 @@
             <groupId>org.springdoc</groupId>
             <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
             <version>2.5.0</version>
-        </dependency>--><!-- Spring Boot 3.2.x ile uyumlu -->
+        </dependency>
 
-        <!--<dependency>
+        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
-        </dependency>-->
+        </dependency>
     </dependencies>
 </project> 
