@@ -92,7 +92,7 @@ public class SecurityConfig {
                                         .requestMatchers("/simple/hello").permitAll()
                                         
                                         // Admin-only endpoints
-                                        .requestMatchers("/users", "POST").hasRole("ADMIN")
+                                        .requestMatchers("/users", "POST").hasAnyRole("ADMIN","USER")
                                         .requestMatchers("/users/*/role", "PATCH").hasRole("ADMIN")
                                         .requestMatchers("/users/*", "DELETE").hasRole("ADMIN")
                                         .requestMatchers(HttpMethod.GET,"/users/*").hasRole("ADMIN")
