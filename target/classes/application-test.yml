@@ -1,0 +1,133 @@
+spring:
+  application:
+    name: template-java
+  
+  # Test Database Configuration - H2 In-Memory
+  datasource:
+    url: jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    driver-class-name: org.h2.Driver
+    username: sa
+    password: 
+  
+  # JPA Configuration for Testing
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.H2Dialect
+        format_sql: true
+        use_sql_comments: true
+    defer-datasource-initialization: true
+  
+  # H2 Console for Testing
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+      settings:
+        web-allow-others: true
+  
+  # SQL Initialization
+  sql:
+    init:
+      mode: always
+      data-locations: classpath:demo-data.sql
+      continue-on-error: true
+  
+  # Internationalization
+  messages:
+    basename: messages
+    default-locale: tr_TR
+    fallback-to-system-locale: false
+    cache-duration: 0  # No caching in test environment
+  
+  # Web Configuration
+  web:
+    locale: tr_TR
+    locale-resolver: fixed
+  
+  # Security Configuration
+  security:
+    require-ssl: false
+  
+  # Redis Configuration - Disabled for testing (use H2 in-memory)
+  redis:
+    enabled: false
+
+# Server Configuration
+server:
+  port: 8080
+  servlet:
+    context-path: /api
+  error:
+    include-message: always
+    include-binding-errors: always
+    include-stacktrace: on-param
+
+# JWT Configuration for Testing
+jwt:
+  secret: test-secret-key-for-jwt-token-generation-in-test-environment-should-be-at-least-256-bits-long
+  expiration: 300000  # 5 minutes for faster testing
+  refresh-expiration: 1800000  # 30 minutes
+
+# OpenAPI/Swagger Configuration
+springdoc:
+  api-docs:
+    enabled: true
+    path: /api-docs
+  swagger-ui:
+    enabled: true
+    path: /swagger-ui.html
+    try-it-out-enabled: true
+    operations-sorter: alpha
+    tags-sorter: alpha
+    doc-expansion: none
+    disable-swagger-default-url: true
+  show-actuator: false
+
+# Logging Configuration for Testing
+logging:
+  level:
+    root: INFO
+    com.example.templatejava: DEBUG
+    org.springframework.security: DEBUG
+    org.springframework.web: DEBUG
+    org.hibernate.SQL: DEBUG
+    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+    org.springframework.transaction: DEBUG
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} - %msg%n"
+    file: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
+  file:
+    name: logs/template-java-test.log
+    max-size: 10MB
+    max-history: 5
+
+# Management/Actuator Configuration
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics
+  endpoint:
+    health:
+      show-details: always
+
+# Application Configuration
+app:
+  name: Template Java Test
+  version: 1.0.0
+  description: Template Java Application - Test Environment
+  demo-data:
+    enabled: true  # Enable demo data for testing
+  cors:
+    allowed-origins: 
+      - http://localhost:3000
+      - http://localhost:8080
+      - http://localhost:4200
+    allowed-methods: GET,POST,PUT,DELETE,OPTIONS
+    allowed-headers: "*"
+    allow-credentials: true
+    max-age: 3600 

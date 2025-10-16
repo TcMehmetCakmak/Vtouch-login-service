@@ -1,0 +1,77 @@
+# Development profile configuration
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/template_java_db
+    username: postgres
+    password: password
+
+  jackson:
+    serialization:
+      WRITE_DATES_AS_TIMESTAMPS: false
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health, info, metrics, loggers # Açmak istediğiniz endpointler
+  endpoint:
+    health:
+      show-details: always # Sağlık durumunda detayları göster
+  
+  jpa:
+    hibernate:
+      ddl-auto: create-drop  # Recreate schema on each restart for development
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        generate_statistics: true
+  
+  # Internationalization
+  messages:
+    basename: messages
+    encoding: UTF-8
+    cache-duration: -1  # Disable caching for development
+  web:
+    locale: tr_TR
+    locale-resolver: fixed
+  
+  # Redis Configuration
+  redis:
+    enabled: true
+  
+  data:
+    redis:
+      host: localhost
+      port: 6379
+      password: 
+      database: 0
+      timeout: 2000ms
+      lettuce:
+        pool:
+          max-active: 8
+          max-idle: 8
+          min-idle: 0
+          max-wait: -1ms
+  
+  cache:
+    type: redis
+    redis:
+      time-to-live: 30m
+      cache-null-values: false
+
+  # Enable debug logging for development
+  logging:
+    level:
+      com.example: DEBUG
+      org.springframework.web: DEBUG
+      org.hibernate.SQL: DEBUG
+      org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+      org.springframework.security: DEBUG
+
+# JWT Configuration for development (shorter expiration for testing)
+jwt:
+  secret: 404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970
+  expiration: 3600000       # 1 hour in milliseconds
+  refresh-token:
+    expiration: 86400000    # 1 day in milliseconds 

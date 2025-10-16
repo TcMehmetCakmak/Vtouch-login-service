@@ -1,0 +1,54 @@
+# Production profile configuration
+spring:
+  datasource:
+    url: ${DATABASE_URL:jdbc:postgresql://localhost:5432/template_java_db}
+    username: ${DB_USERNAME:postgres}
+    password: ${DB_PASSWORD:password}
+    hikari:
+      maximum-pool-size: 20
+      minimum-idle: 5
+      idle-timeout: 300000
+      connection-timeout: 20000
+      max-lifetime: 1200000
+  
+  jpa:
+    hibernate:
+      ddl-auto: validate  # Don't modify schema in production
+    show-sql: false
+    properties:
+      hibernate:
+        format_sql: false
+        generate_statistics: false
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health, info, metrics, loggers # Açmak istediğiniz endpointler
+  endpoint:
+    health:
+      show-details: always # Sağlık durumunda detayları göster
+  
+  # Production logging configuration
+  logging:
+    level:
+      com.example: INFO
+      org.springframework.web: WARN
+      org.hibernate.SQL: WARN
+      org.springframework.security: INFO
+      root: INFO
+
+# JWT Configuration for production (longer expiration)
+jwt:
+  secret: ${JWT_SECRET:404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970}
+  expiration: 86400000      # 24 hours in milliseconds
+  refresh-token:
+    expiration: 604800000   # 7 days in milliseconds
+
+# Security settings for production
+server:
+  error:
+    include-message: never
+    include-binding-errors: never
+    include-stacktrace: never
+    include-exception: false 

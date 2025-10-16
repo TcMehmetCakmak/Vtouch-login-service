@@ -1,0 +1,121 @@
+# Local development profile configuration
+# Use this profile for local development with PostgreSQL
+# Run with: mvn spring-boot:run -Dspring.profiles.active=local
+
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/template_java_db
+    username: postgres
+    password: password
+    hikari:
+      maximum-pool-size: 10
+      minimum-idle: 2
+      idle-timeout: 600000
+      connection-timeout: 30000
+      max-lifetime: 1800000
+  jackson:
+    serialization:
+      WRITE_DATES_AS_TIMESTAMPS: false
+  
+  jpa:
+    hibernate:
+      ddl-auto: update  # Update schema when entities change
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+        use_sql_comments: true
+        generate_statistics: false
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+  
+  # Internationalization
+  messages:
+    basename: messages
+    encoding: UTF-8
+    cache-duration: -1  # Disable caching for local development
+  web:
+    locale: tr_TR
+    locale-resolver: fixed
+  
+  # Redis Configuration
+  redis:
+    enabled: true
+  
+  data:
+    redis:
+      host: localhost
+      port: 6379
+      password: 
+      database: 1  # Use different database for local
+      timeout: 2000ms
+      lettuce:
+        pool:
+          max-active: 8
+          max-idle: 8
+          min-idle: 0
+          max-wait: -1ms
+  
+  cache:
+    type: redis
+    redis:
+      time-to-live: 15m  # Shorter TTL for local development
+      cache-null-values: false
+
+# JWT Configuration for local development
+jwt:
+  secret: 404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970
+  expiration: 3600000       # 1 hour in milliseconds (shorter for testing)
+  refresh-token:
+    expiration: 86400000    # 1 day in milliseconds
+
+# Server configuration
+server:
+  port: 7070
+  servlet:
+    context-path: /api
+  error:
+    include-message: always
+    include-binding-errors: always
+    include-stacktrace: on-param
+    include-exception: true
+
+# Management endpoints
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,env,configprops,beans,mappings
+  endpoint:
+    health:
+      show-details: always
+
+# Swagger/OpenAPI configuration
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+    operations-sorter: method
+    tags-sorter: alpha
+    try-it-out-enabled: true
+    filter: true
+  show-actuator: true
+  default-consumes-media-type: application/json
+  default-produces-media-type: application/json
+
+# Additional local development settings
+logging:
+  level:
+    com.example: DEBUG
+    org.springframework.web: INFO
+    org.hibernate.SQL: DEBUG
+    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+    org.springframework.security: DEBUG
+    org.springframework.security.web.FilterChainProxy: DEBUG
+    com.example.templatejava.security: DEBUG
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} - %msg%n"
+    file: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
+  file:
+    name: logs/template-java-local.log 
